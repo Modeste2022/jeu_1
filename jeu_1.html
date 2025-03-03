@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Jeu de Frappe</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color:bisque;
+            font-family: Arial, sans-serif;
+        }
+
+        #game-container {
+            text-align: center;
+        }
+
+        #letter {
+            font-size: 3em;
+            margin: 20px 0;
+        }
+
+        #score {
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game-container">
+        <p id="instructions">Appuyez sur la barre d'espace pour commencer</p>
+        <p id="letter"></p>
+        <p id="score">Score: <span id="score-value">0</span></p>
+    </div>
+    <script>
+        let score = 0;
+        let currentLetter = '';
+
+        document.addEventListener('keydown', (event) => {
+            if (event.code === 'Space') {
+                startGame();
+            } else if (currentLetter && event.key.toLowerCase() === currentLetter.toLowerCase()) {
+                score++;
+                updateScore();
+                generateNewLetter();
+            } else if (currentLetter && event.key.toLowerCase() !== currentLetter.toLowerCase()) {
+                score -= 2;
+                if (score < 0) score = 0;
+                updateScore();
+                if (score === 0) {
+                    endGame();
+                } else {
+                    generateNewLetter();
+                }
+            }
+        });
+
+        function startGame() {
+            score = 0;
+            updateScore();
+            generateNewLetter();
+        }
+
+        function generateNewLetter() {
+            const letters = 'abcdefghijklmnopqrstuvwxyz';
+            currentLetter = letters[Math.floor(Math.random() * letters.length)];
+            document.getElementById('letter').textContent = currentLetter.toUpperCase();
+        }
+
+        function updateScore() {
+            document.getElementById('score-value').textContent = score;
+        }
+
+        function endGame() {
+            document.getElementById('letter').textContent = 'Game Over';
+        }
+    </script>
+
+</body>
+
+</html>
